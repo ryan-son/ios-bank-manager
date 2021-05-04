@@ -88,7 +88,7 @@ final class Client: Operation {
         case .deposit:
             Thread.sleep(forTimeInterval: Task.deposit.processTime)
         case .loan:
-        Thread.sleep(forTimeInterval: Task.loan.processTime)
+            Thread.sleep(forTimeInterval: Task.loan.processTime)
         }
         
         print(endTaskText)
