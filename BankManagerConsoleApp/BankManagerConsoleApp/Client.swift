@@ -17,10 +17,28 @@ final class Client: Operation {
     }
     
     // MARK: - NameSpaces
-    private enum TimeForProcessingTask {
-        static let deposit: Double = 0.7
+    private enum Task: CaseIterable {
+        case deposit
+        case loan
+        
+        var processTime: Double {
+            switch self {
+            case .deposit:
+                return 0.7
+            case .loan:
+                return 1.1
+            }
+        }
+        
+        var name: String {
+            switch self {
+            case .deposit:
+                return "예금"
+            case .loan:
+                return "대출"
+            }
+        }
     }
-    
     // MARK: - Private Method
     func startTask() -> String {
         return "\(waitingNumber) 번 고객 업무 시작."
@@ -36,7 +54,7 @@ final class Client: Operation {
         let endTaskText: String = endTask()
         
         print(startTaskText)
-        Thread.sleep(forTimeInterval: TimeForProcessingTask.deposit)
+        Thread.sleep(forTimeInterval: Task.deposit.processTime)
         print(endTaskText)
     }
 }
