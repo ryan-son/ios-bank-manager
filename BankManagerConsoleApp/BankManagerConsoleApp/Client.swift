@@ -10,10 +10,15 @@ import Foundation
 final class Client: Operation {
     // MARK: - Properties
     let waitingNumber: Int
+    private let task: Task
     
-    init(_ waitingNumber: Int) {
-        self.waitingNumber = waitingNumber
+    init(_ waitingNumber: Int) throws {
+        guard let task = Task.allCases.randomElement() else {
+            throw BankManagerError.failedToInitializingTask
+        }
         
+        self.waitingNumber = waitingNumber
+        self.task = task
     }
     
     // MARK: - NameSpaces
@@ -39,13 +44,14 @@ final class Client: Operation {
             }
         }
     }
+    
     // MARK: - Private Method
     func startTask() -> String {
-        return "\(waitingNumber) 번 고객 업무 시작."
+        return "\(waitingNumber) 번 고객 \(task.name) 업무 시작."
     }
     
     func endTask() -> String {
-        return "\(waitingNumber) 번 고객 업무 종료!"
+        return "\(waitingNumber) 번 고객 \(task.name) 업무 종료!"
     }
     
     // MARK: - Override Method from the Operation Class

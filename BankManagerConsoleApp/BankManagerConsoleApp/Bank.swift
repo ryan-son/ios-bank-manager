@@ -42,8 +42,12 @@ struct Bank {
         }
         
         for waitingNumber in 1...number {
-            let client: Client = Client(waitingNumber)
-            clients.append(client)
+            do {
+                let client: Client = try Client(waitingNumber)
+                clients.append(client)
+            } catch {
+                print(error)
+            }
         }
         
         return clients
