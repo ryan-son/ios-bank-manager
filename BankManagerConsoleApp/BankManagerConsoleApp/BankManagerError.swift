@@ -8,13 +8,16 @@
 enum BankManagerError: Error, CustomStringConvertible {
     case invalidMenu
     case failedToInitializingTask
+    case failedToInitializingGrade
     
     var description: String {
         switch self {
         case .invalidMenu:
-            return "Invalid Input"
+            return "Invalid Input."
         case .failedToInitializingTask:
-            return "Failed to initializing task of a client"
+            return "Failed to initializing task of a client."
+        case .failedToInitializingGrade:
+            return "Failed to initializing grade of a client."
         }
     }
 }

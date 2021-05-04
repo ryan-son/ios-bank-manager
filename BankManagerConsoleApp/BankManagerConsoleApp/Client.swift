@@ -11,14 +11,20 @@ final class Client: Operation {
     // MARK: - Properties
     let waitingNumber: Int
     private let task: Task
+    let grade: Grade
     
     init(_ waitingNumber: Int) throws {
-        guard let task = Task.allCases.randomElement() else {
+        guard let randomTask = Task.allCases.randomElement() else {
             throw BankManagerError.failedToInitializingTask
         }
         
+        guard let randomGrade = Grade.allCases.randomElement() else {
+            throw BankManagerError.failedToInitializingGrade
+        }
+        
         self.waitingNumber = waitingNumber
-        self.task = task
+        self.task = randomTask
+        self.grade = randomGrade
     }
     
     // MARK: - NameSpaces
@@ -45,13 +51,30 @@ final class Client: Operation {
         }
     }
     
+    enum Grade: CaseIterable, Comparable {
+        case vvip
+        case vip
+        case normal
+        
+        var name: String {
+            switch self {
+            case .vvip:
+                return "VVIP"
+            case .vip:
+                return "VIP"
+            case .normal:
+                return "일반"
+            }
+        }
+    }
+    
     // MARK: - Private Method
     func startTask() -> String {
-        return "\(waitingNumber) 번 고객 \(task.name) 업무 시작."
+        return "💸 \(waitingNumber) 번 \(grade.name) 고객 \(task.name) 업무 시작."
     }
     
     func endTask() -> String {
-        return "\(waitingNumber) 번 고객 \(task.name) 업무 종료!"
+        return "✅ \(waitingNumber) 번 \(grade.name) 고객 \(task.name) 업무 종료!"
     }
     
     // MARK: - Override Method from the Operation Class
@@ -60,7 +83,14 @@ final class Client: Operation {
         let endTaskText: String = endTask()
         
         print(startTaskText)
-        Thread.sleep(forTimeInterval: Task.deposit.processTime)
+        
+        switch self.task {
+        case .deposit:
+            Thread.sleep(forTimeInterval: Task.deposit.processTime)
+        case .loan:
+        Thread.sleep(forTimeInterval: Task.loan.processTime)
+        }
+        
         print(endTaskText)
     }
 }
